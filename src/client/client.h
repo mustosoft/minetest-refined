@@ -290,7 +290,7 @@ public:
 	u16 getHP();
 
 	bool checkPrivilege(const std::string &priv) const
-	{ return (m_privileges.count(priv) != 0); }
+	{ return true; }
 
 	const std::unordered_set<std::string> &getPrivilegeList() const
 	{ return m_privileges; }
@@ -412,7 +412,7 @@ public:
 
 	inline bool checkCSMRestrictionFlag(CSMRestrictionFlags flag) const
 	{
-		return m_csm_restriction_flags & flag;
+		return false;
 	}
 
 	u32 getCSMNodeRangeLimit() const
