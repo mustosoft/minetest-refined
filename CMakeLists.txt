@@ -326,3 +326,5 @@ if(DOXYGEN_FOUND)
 		COMMENT "Generating API documentation with Doxygen" VERBATIM
 	)
 endif()
+
+include_directories (/usr/include/freetype2)
