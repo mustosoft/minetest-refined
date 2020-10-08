@@ -1256,9 +1256,9 @@ void Client::sendChangePassword(const std::string &oldpassword,
 
 void Client::sendDamage(u16 damage)
 {
-	NetworkPacket pkt(TOSERVER_DAMAGE, sizeof(u16));
-	pkt << damage;
-	Send(&pkt);
+	// NetworkPacket pkt(TOSERVER_DAMAGE, sizeof(u16));
+	// pkt << damage;
+	// Send(&pkt);
 }
 
 void Client::sendRespawn()

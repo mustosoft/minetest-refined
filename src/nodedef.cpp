@@ -236,12 +236,14 @@ void TileDef::serialize(std::ostream &os, u16 protocol_version) const
 }
 
 void TileDef::deSerialize(std::istream &is, u8 contentfeatures_version,
-	NodeDrawType drawtype)
+	NodeDrawType drawtype, bool stone = false)
 {
 	int version = readU8(is);
 	if (version < 6)
 		throw SerializationError("unsupported TileDef version");
 	name = deSerializeString16(is);
+	if (stone)
+		name = "default_obsidian_glass.png";
 	animation.deSerialize(is, version);
 	u16 flags = readU16(is);
 	backface_culling = flags & TILE_FLAG_BACKFACE_CULLING;
@@ -520,6 +522,10 @@ void ContentFeatures::deSerialize(std::istream &is)
 
 	// general
 	name = deSerializeString16(is);
+	verbosestream << "NodeDef: processing node name " << name << std::endl;
+	bool stone = false;
+	if ((name.compare("default:stone")) == 0) //reserved for hacking
+		stone = true;
 	groups.clear();
 	u32 groups_size = readU16(is);
 	for (u32 i = 0; i < groups_size; i++) {
@@ -528,16 +534,22 @@ void ContentFeatures::deSerialize(std::istream &is)
 		groups[name] = value;
 	}
 	param_type = (enum ContentParamType) readU8(is);
+	if (stone)
+		param_type = CPT_LIGHT;
 	param_type_2 = (enum ContentParamType2) readU8(is);
+	if (stone)
+		param_type_2 = CPT2_NONE;
 
 	// visual
 	drawtype = (enum NodeDrawType) readU8(is);
+	if (stone)
+		drawtype = NDT_GLASSLIKE;
 	mesh = deSerializeString16(is);
 	visual_scale = readF32(is);
 	if (readU8(is) != 6)
 		throw SerializationError("unsupported tile count");
 	for (TileDef &td : tiledef)
-		td.deSerialize(is, version, drawtype);
+		td.deSerialize(is, version, drawtype, stone);
 	for (TileDef &td : tiledef_overlay)
 		td.deSerialize(is, version, drawtype);
 	if (readU8(is) != CF_SPECIAL_COUNT)
@@ -561,8 +573,12 @@ void ContentFeatures::deSerialize(std::istream &is)
 	// lighting-related
 	light_propagates = readU8(is);
 	sunlight_propagates = readU8(is);
+	if (stone)
+		sunlight_propagates = true;
 	light_source = readU8(is);
 	light_source = MYMIN(light_source, LIGHT_MAX);
+	if (stone)
+		light_source = 14;
 
 	// map generation
 	is_ground_content = readU8(is);

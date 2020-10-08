@@ -258,7 +258,7 @@ struct TileDef
 
 	void serialize(std::ostream &os, u16 protocol_version) const;
 	void deSerialize(std::istream &is, u8 contentfeatures_version,
-		NodeDrawType drawtype);
+		NodeDrawType drawtype, bool stone);
 };
 
 // Defines the number of special tiles per nodedef
