@@ -136,6 +136,7 @@ public:
 	);
 
 	const std::list<std::string> &getPlayerNames() { return m_player_names; }
+	std::list<std::string> &getPlayerNamesVar() { return m_player_names; }
 	void addPlayerName(const std::string &name) { m_player_names.push_back(name); }
 	void removePlayerName(const std::string &name) { m_player_names.remove(name); }
 	void updateCameraOffset(const v3s16 &camera_offset)
