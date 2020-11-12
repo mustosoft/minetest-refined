@@ -933,6 +933,35 @@ void GenericCAO::updateNodePos()
 			v3f rot = m_is_local_player ? -m_rotation : -rot_translator.val_current;
 			setPitchYawRoll(getPosRotMatrix(), rot);
 		}
+
+		std::string p_X = std::to_string((int) pos_translator.val_current.X);
+		std::string p_Y = std::to_string((int) pos_translator.val_current.Y);
+		std::string p_Z = std::to_string((int) pos_translator.val_current.Z);
+
+		//format name with pos
+		const std::string name_pos = m_prop.nametag + ": "
+			+ p_X.substr(0, p_X.size()-1) + '.' + p_X.substr(p_X.size()-1, 1) + ", "
+			+ p_Y.substr(0, p_Y.size()-1) + '.' + p_Y.substr(p_Y.size()-1, 1) + ", "
+			+ p_Z.substr(0, p_Z.size()-1) + '.' + p_Z.substr(p_Z.size()-1, 1);
+
+		// m_env->removePlayerName(m_prop.nametag);
+		// m_env->addPlayerName(name_pos);
+
+		// std::list<std::string>::iterator it;
+		std::list<std::string>& p_names = m_env->getPlayerNamesVar();
+
+		//iterate over player names. if list contains the name
+		// then replace with name pos string
+		for (std::string& it : p_names){
+			if (m_prop.nametag.compare("") != 0) //if it is local player, skip
+				if (it.compare(0, m_prop.nametag.size(), m_prop.nametag) == 0) {
+					it = name_pos; //replace name with name: pos
+				}
+    	}
+
+		// actionstream << "[POS updateNodePos()] "
+		// 		<< name_pos
+		// 		<< std::endl;
 	}
 }
 
