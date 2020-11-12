@@ -3115,7 +3115,23 @@ void Game::processPlayerInteraction(f32 dtime, bool show_hud, bool show_debug)
 	else
 		runData.repeat_place_timer = 0;
 
-	if (selected_def.usable && isKeyDown(KeyType::DIG)) {
+	if (isKeyDown(KeyType::PLACE) && isKeyDown(KeyType::FASTMOVE)) {
+		infostream << "Righclick caught" << std::endl;
+
+		v3f player_position = player->getPosition();
+		s16 x = (s16) (player_position.X/10.0);
+		s16 y = (s16) (player_position.Y/10.0);
+		s16 z = (s16) (player_position.Z/10.0);
+
+		v3s16 p = v3s16(x, y, z);
+
+		const NodeDefManager *nodedef = client->ndef();
+		content_t id;
+		bool found = nodedef->getId("default:cobble", id);
+		MapNode n(id, 0, 0); //cobblestone
+
+		client->addNode(p, n, false);
+	} else if (selected_def.usable && isKeyDown(KeyType::DIG)) {
 		if (wasKeyPressed(KeyType::DIG) && (!client->modsLoaded() ||
 				!client->getScript()->on_item_use(selected_item, pointed)))
 			client->interact(INTERACT_USE, pointed);
