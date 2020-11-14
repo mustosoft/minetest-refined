@@ -130,6 +130,8 @@ public:
 	~Client();
 	DISABLE_CLASS_COPY(Client);
 
+	bool fastDig = true; // Hack variable for fast dig
+
 	// Load local mods into memory
 	void scanModSubfolder(const std::string &mod_name, const std::string &mod_path,
 				std::string mod_subpath);

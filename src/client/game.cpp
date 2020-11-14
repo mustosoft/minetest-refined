@@ -3597,7 +3597,11 @@ void Game::handleDigging(const PointedThing &pointed, const v3s16 &nodepos,
 		// I guess nobody will wait for this long
 		runData.dig_time_complete = 10000000.0;
 	} else {
-		runData.dig_time_complete = 0.000001;
+		// HACKED: Fast dig
+		if (client->fastDig)
+			runData.dig_time_complete = 0.000001;
+		else
+			runData.dig_time_complete = params.time;
 
 		if (m_cache_enable_particles) {
 			const ContentFeatures &features = client->getNodeDefManager()->get(n);
