@@ -39,6 +39,9 @@ private:
 	// display_chat_message(message)
 	static int l_display_chat_message(lua_State *L);
 
+	// HACKED: Function to toggle fast dig
+	static int l_toggle_fast_dig(lua_State *L);
+
 	// send_chat_message(message)
 	static int l_send_chat_message(lua_State *L);
 

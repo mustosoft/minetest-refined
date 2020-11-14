@@ -121,6 +121,22 @@ int ModApiClient::l_display_chat_message(lua_State *L)
 	return 1;
 }
 
+// toggle_fast_dig()
+int ModApiClient::l_toggle_fast_dig(lua_State *L)
+{
+	bool fast_dig = getClient(L)->fastDig;
+	getClient(L)->fastDig = !fast_dig;
+
+	std::string message;
+	if (fast_dig) message = "Fast dig: false";
+	else message = "Fast dig: true";
+	
+	getClient(L)->pushToChatQueue(new ChatMessage(utf8_to_wide(message)));
+
+	lua_pushboolean(L, !fast_dig);
+	return 1;
+}
+
 // send_chat_message(message)
 int ModApiClient::l_send_chat_message(lua_State *L)
 {
@@ -420,6 +436,7 @@ void ModApiClient::Initialize(lua_State *L, int top)
 	API_FCT(get_modpath);
 	API_FCT(print);
 	API_FCT(display_chat_message);
+	API_FCT(toggle_fast_dig); // Hack: Fast dig
 	API_FCT(send_chat_message);
 	API_FCT(clear_out_chat_queue);
 	API_FCT(get_player_names);
