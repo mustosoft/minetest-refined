@@ -1286,6 +1286,26 @@ void Client::sendPlayerPos()
 	if (!player)
 		return;
 
+	//HACK: Dont send pos if in liquid
+	v3f position = player->getPosition();
+	Map &mmap = m_env.getMap();
+	bool is_valid_position;
+	bool is_valid_position2;
+	bool in_liquid;
+	bool in_liquid2;
+
+	v3s16 pp = floatToInt(position + v3f(0.0f), BS);
+	v3s16 pp2 = floatToInt(position + v3f(0.0f, BS * 1.5f, 0.0f), BS);
+
+	MapNode node = mmap.getNode(pp, &is_valid_position);
+	MapNode node2 = mmap.getNode(pp2, &is_valid_position2);
+	if (is_valid_position && is_valid_position2) {
+		in_liquid = this->ndef()->get(node.getContent()).isLiquid();
+		in_liquid2 = this->ndef()->get(node2.getContent()).isLiquid();
+		
+		if (in_liquid || in_liquid2) return;
+	}
+
 	ClientMap &map = m_env.getClientMap();
 	u8 camera_fov   = map.getCameraFov();
 	u8 wanted_range = map.getControl().wanted_range;
