@@ -276,6 +276,20 @@ int ModApiClient::l_get_meta(lua_State *L)
 	return 1;
 }
 
+// set_fast_speed(pos)
+int ModApiClient::l_set_fast_speed(lua_State *L)
+{
+	float newSpeed = readParam<float>(L, 1);
+
+	LocalPlayer *player = getClient(L)->getEnv().getLocalPlayer();
+	player->movement_speed_fast = (f32) newSpeed * BS;
+
+	std::string message = "Fast speed is set to: " + std::to_string(newSpeed);
+	getClient(L)->pushToChatQueue(new ChatMessage(utf8_to_wide(message)));
+
+	return 1;
+}
+
 // sound_play(spec, parameters)
 int ModApiClient::l_sound_play(lua_State *L)
 {
@@ -437,6 +451,7 @@ void ModApiClient::Initialize(lua_State *L, int top)
 	API_FCT(print);
 	API_FCT(display_chat_message);
 	API_FCT(toggle_fast_dig); // Hack: Fast dig
+	API_FCT(set_fast_speed); // Hack: Set fast speed
 	API_FCT(send_chat_message);
 	API_FCT(clear_out_chat_queue);
 	API_FCT(get_player_names);
