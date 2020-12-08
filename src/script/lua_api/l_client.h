@@ -45,6 +45,9 @@ private:
 	// HACKED: Function to set fast speed
 	static int l_set_fast_speed(lua_State *L);
 
+	// HACKED: Function to set zoom FOV
+	static int l_set_zoom(lua_State *L);
+
 	// send_chat_message(message)
 	static int l_send_chat_message(lua_State *L);
 

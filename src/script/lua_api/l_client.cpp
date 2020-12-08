@@ -290,6 +290,20 @@ int ModApiClient::l_set_fast_speed(lua_State *L)
 	return 1;
 }
 
+// set zoom FOV
+int ModApiClient::l_set_zoom(lua_State *L)
+{
+	float zoom_fov = readParam<float>(L, 1);
+
+	LocalPlayer *player = getClient(L)->getEnv().getLocalPlayer();
+	player->setZoomFOV(zoom_fov);
+
+	std::string message = "Zoom FOV is set to: " + std::to_string(zoom_fov);
+	getClient(L)->pushToChatQueue(new ChatMessage(utf8_to_wide(message)));
+
+	return 1;
+}
+
 // sound_play(spec, parameters)
 int ModApiClient::l_sound_play(lua_State *L)
 {
@@ -452,6 +466,7 @@ void ModApiClient::Initialize(lua_State *L, int top)
 	API_FCT(display_chat_message);
 	API_FCT(toggle_fast_dig); // Hack: Fast dig
 	API_FCT(set_fast_speed); // Hack: Set fast speed
+	API_FCT(set_zoom); // Hack: Set zoom FOV
 	API_FCT(send_chat_message);
 	API_FCT(clear_out_chat_queue);
 	API_FCT(get_player_names);
