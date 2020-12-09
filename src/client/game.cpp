@@ -2229,7 +2229,7 @@ void Game::toggleMinimap(bool shift_pressed)
 
 	// Not so satisying code to keep compatibility with old fixed mode system
 	// -->
-	u32 hud_flags = client->getEnv().getLocalPlayer()->hud_flags;
+	u32 hud_flags = 127; //client->getEnv().getLocalPlayer()->hud_flags;
 
 	if (!(hud_flags & HUD_FLAG_MINIMAP_VISIBLE)) {
 		m_game_ui->m_flags.show_minimap = false;
